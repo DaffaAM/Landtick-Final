@@ -1,0 +1,18 @@
+"use strict";
+module.exports = (sequelize, DataTypes) => {
+  const payment = sequelize.define(
+    "payment",
+    {
+      price: DataTypes.INTEGER,
+      qty: DataTypes.INTEGER,
+      totalPrice: DataTypes.INTEGER,
+      status: DataTypes.STRING,
+      attachment: DataTypes.STRING
+    },
+    {}
+  );
+  payment.associate = function(models) {
+    // associations can be defined here
+  };
+  return payment;
+};
