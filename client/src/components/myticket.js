@@ -1,11 +1,19 @@
 import React, { Component } from "react";
 import "../style/allcss.css";
 import Usernav from "../components/navbar/nav";
-
+import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
+import { ticketUserA } from "../_actions/ticketUserA";
+import { connect } from "react-redux";
 
 class MyTicket extends Component {
+  componentDidMount() {
+    this.props.ticketUserA();
+  }
+
   render() {
+    const { data } = this.props.ticketUserR;
+    console.log("yummy", data);
     return (
       <>
         <div className="topnavbar">
@@ -66,11 +74,25 @@ class MyTicket extends Component {
           <p className="orderticket2">Daffa Abdhy Muzhaffar</p>
           <p className="orderticket3">081210313944</p>
           <p className="orderticket4">daffaa34@gmail.com</p>
-          <Button className="btnbayar">Bayar Sekarang</Button>
+          <Link to="/invoice">
+            <Button className="btnbayar">Bayar Sekarang</Button>
+          </Link>
         </div>
       </>
     );
   }
 }
 
-export default MyTicket;
+const mapStateToProps = state => {
+  return {
+    ticketUserR: state.ticketUserR
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    ticketUserA: data => dispatch(ticketUserA(data))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyTicket);

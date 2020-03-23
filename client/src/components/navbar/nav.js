@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import "../../style/allcss.css";
 import { Redirect, Link } from "react-router-dom";
-// import { connect } from "react-redux";
-// import { login } from "../../_action/LoginA";
+import "./nav.css";
+import { connect } from "react-redux";
+import { find } from "../../_actions/getUserA";
 
 class Usernav extends Component {
+  componentDidMount() {
+    this.props.find();
+  }
   // componentDidMount() {
   //     this.handleRefresh()
   // }
@@ -13,12 +17,17 @@ class Usernav extends Component {
   //         window.location.reload(true)
   //     )
   // }
-
-  handleLogout = () => {
-    return window.localStorage.removeItem("token");
-  };
+  handleLogout() {
+    window.localStorage.removeItem("token");
+    window.location.href = "http://localhost:3000/";
+  }
 
   render() {
+    const { dataLu } = this.props.findUser;
+    // if (this.props.findUserR != null) {
+    // if (this.props.findUserR != undefined) {
+    console.log(dataLu);
+
     //const token = localStorage.getItem('token')
     // const { data } = this.props.loginR;
     // console.log("LIHAT", data);
@@ -38,7 +47,7 @@ class Usernav extends Component {
               alt="logo"
             ></img>
 
-            <p className="title1">Daffa</p>
+            <p className="title1">{dataLu.name}</p>
           </div>
           <div className="dropdown">
             <img
@@ -48,13 +57,13 @@ class Usernav extends Component {
               alt="as"
             />
             <div className="childdrop">
-              <Link to="/add_tiket">
+              <Link to="/approve">
                 <div className="drop">
                   <p>Tiket Saya</p>
                 </div>
               </Link>
               <hr />
-              <Link to="/add_tiket">
+              <Link to="/invoice">
                 <div className="drop">
                   <p>Payment</p>
                 </div>
@@ -73,4 +82,15 @@ class Usernav extends Component {
   }
 }
 
-export default Usernav;
+const mapStateToProps = state => {
+  console.log("DATA REDUX", state);
+  return {
+    findUser: state.findUser
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    find: data => dispatch(find(data))
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Usernav);

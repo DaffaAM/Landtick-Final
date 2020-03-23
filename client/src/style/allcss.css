@@ -32,7 +32,7 @@
 }
 
 .turunmyticket {
-  position: relative;
+  position: absolute;
   left: 200px;
   top: 100px;
 }
@@ -379,6 +379,29 @@ h1.sayhey {
   opacity: 0.4;
 }
 
+.qrmy123 {
+  position: absolute;
+  left: 870px;
+  top: 130px;
+}
+
+.status1 {
+  position: absolute;
+  width: 69px;
+  height: 24px;
+  left: 70px;
+  top: 150px;
+  text-align: center;
+
+  font-family: "Roboto";
+  font-weight: bolder;
+
+  color: #000000;
+  background: linear-gradient(180deg, #0acf83 0%, #0acf83 100%);
+  border-radius: 2px;
+  opacity: 0.4;
+}
+
 .kelastiket {
   position: absolute;
   width: 90px;
@@ -509,11 +532,12 @@ h1.sayhey {
 }
 
 .footer {
-  position: absolute;
+  /* position: absolute; */
   width: 1519px;
   height: 80px;
   left: 0px;
-  top: 1180px;
+  margin-top: 250px;
+  /* top: 1180px; */
 
   background: linear-gradient(90deg, #ec7ab7 0%, #ec7a7a 100%);
 }
@@ -2058,6 +2082,7 @@ td {
   display: inline-block;
   box-sizing: border-box;
   right: 60px;
+  z-index: 1;
 }
 
 .childdrop {

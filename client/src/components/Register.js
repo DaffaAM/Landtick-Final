@@ -1,41 +1,33 @@
 import React, { Component } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 import "../style/allcss.css";
-// import { connect } from "react-redux";
-// import { RegisterA } from "./_actions/RegisterA";
-// import { getSpecies } from "./_actions/SpeciesA";
+import { connect } from "react-redux";
+import { RegisterA } from "../_actions/RegisterA";
 
 class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
       show: false,
-      selectedSpecies: "",
-      breednder: "",
+      name: "",
+      username: "",
       email: "",
       password: "",
-      phone: "",
-      address: "",
-      namepet: "",
       gender: "",
-      species: "",
-      age: ""
+      phone: "",
+      address: ""
     };
   }
 
   handleRegister = () => {
     const data = {
-      breednder: this.state.breednder,
+      name: this.state.name,
+      username: this.state.username,
       email: this.state.email,
       password: this.state.password,
+      gender: this.state.gender,
       phone: this.state.phone,
-      address: this.state.address,
-      pet: {
-        name: this.state.petName,
-        gender: this.state.gender,
-        species: this.state.selectedSpecies,
-        age: this.state.age
-      }
+      address: this.state.address
     };
     this.props.RegisterA(data);
     console.log(data);
@@ -72,7 +64,7 @@ class Register extends Component {
               className="formregist"
               type="text"
               placeholder="Nama Lengkap"
-              onChange={e => this.setState({ breednder: e.target.value })}
+              onChange={e => this.setState({ name: e.target.value })}
             ></Form.Control>
           </Form.Group>
           <Form.Group>
@@ -80,6 +72,14 @@ class Register extends Component {
               className="formregist"
               type="text"
               placeholder="Username"
+              onChange={e => this.setState({ username: e.target.value })}
+            ></Form.Control>
+          </Form.Group>
+          <Form.Group>
+            <Form.Control
+              className="formregist"
+              type="email"
+              placeholder="Email"
               onChange={e => this.setState({ email: e.target.value })}
             ></Form.Control>
           </Form.Group>
@@ -87,23 +87,15 @@ class Register extends Component {
             <Form.Control
               className="formregist"
               type="password"
-              placeholder="Email"
-              onChange={e => this.setState({ password: e.target.value })}
-            ></Form.Control>
-          </Form.Group>
-          <Form.Group>
-            <Form.Control
-              className="formregist"
-              type="password"
               placeholder="Password"
-              onChange={e => this.setState({ phone: e.target.value })}
+              onChange={e => this.setState({ password: e.target.value })}
             ></Form.Control>
           </Form.Group>
           <Form.Group controlId="exampleForm.ControlSelect1">
             <Form.Control
               as="select"
               className="formregist"
-              onChange={e => this.setState({ selectedSpecies: e.target.value })}
+              onChange={e => this.setState({ gender: e.target.value })}
               placeholder="Jenis Kelamin"
             >
               <option>Jenis Kelamin</option>
@@ -117,7 +109,7 @@ class Register extends Component {
               className="formregist"
               type="text"
               placeholder="Telp"
-              onChange={e => this.setState({ petName: e.target.value })}
+              onChange={e => this.setState({ phone: e.target.value })}
             ></Form.Control>
           </Form.Group>
           <Form.Group>
@@ -126,6 +118,7 @@ class Register extends Component {
               rows="3"
               className="formregist"
               placeholder="Alamat"
+              onChange={e => this.setState({ address: e.target.value })}
             />
           </Form.Group>
           <Form.Group>
@@ -134,6 +127,7 @@ class Register extends Component {
               variant="primary"
               type="submit"
               onClick={this.handleRegister}
+              href="/afterlogin"
             >
               Submit
             </Button>
@@ -147,4 +141,16 @@ class Register extends Component {
   }
 }
 
-export default Register;
+const mapStateToProps = state => {
+  return {
+    register: state.RegisteR
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    RegisterA: data => dispatch(RegisterA(data))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

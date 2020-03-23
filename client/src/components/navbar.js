@@ -3,9 +3,33 @@ import "../style/allcss.css";
 import { Button } from "react-bootstrap";
 import Login from "../components/Login";
 import Register from "./Register";
+import { connect } from "react-redux";
+import { find } from "../_actions/getUserA";
+import { ticketUserA } from "../_actions/ticketUserA";
 
 class Navbar extends Component {
+  componentDidMount() {
+    this.props.find();
+    this.props.ticketUserA();
+  }
+
+  diff = (start, end) => {
+    start = start.split(":");
+    end = end.split(":");
+    var startDate = new Date(0, 0, 0, start[0], start[1], 0);
+    var endDate = new Date(0, 0, 0, end[0], end[1], 0);
+    var diff = Math.abs(endDate.getTime() - startDate.getTime());
+    var hours = Math.floor(diff / 1000 / 60 / 60);
+    diff -= hours * 1000 * 60 * 60;
+    var minutes = Math.floor(diff / 1000 / 60);
+
+    return (
+      (hours < 9 ? "0" : "") + hours + ":" + (minutes < 9 ? "0" : "") + minutes
+    );
+  };
+
   render() {
+    const { data } = this.props.ticketUserR;
     return (
       <>
         <div className="topnavbar">
@@ -76,63 +100,58 @@ class Navbar extends Component {
                 <p className="tulisbtn">Cari Tiket</p>
               </Button>
             </div>
-            <label className="labelinfo">Nama Kereta</label>
-            <label className="labelinfo2">Berangkat</label>
-            <label className="labelinfo3">Tiba</label>
-            <label className="labelinfo4">Durasi</label>
-            <label className="labelinfo5">Harga Per Orang</label>
-
-            <div className="coba">
-              <label className="labeldiv1">Argo Wilis</label>
-              <label className="labeldiv2">Eksekutif (H)</label>
-              <label className="labeldiv3">05.00</label>
-              <label className="labeldiv4">Gambir</label>
-              <label className="labeldiv5">10.05</label>
-              <img
-                src={require("../img/Arrow5.png")}
-                alt="arrow"
-                className="panah"
-              ></img>
-              <label className="labeldiv6">Surabaya</label>
-              <label className="labelwaktu">5j 05m</label>
-              <label className="labelharga">250.000</label>
-            </div>
-            <div className="coba">
-              <label className="labeldiv1">Anjasmoro</label>
-              <label className="labeldiv2">Ekonomi (Q)</label>
-              <label className="labeldiv3">05.00</label>
-              <label className="labeldiv4">Gambir</label>
-              <label className="labeldiv5">10.05</label>
-              <img
-                src={require("../img/Arrow5.png")}
-                alt="arrow"
-                className="panah"
-              ></img>
-              <label className="labeldiv6">Surabaya</label>
-              <label className="labelwaktu">5j 05m</label>
-              <label className="labelharga">100.000</label>
-            </div>
-            <div className="coba">
-              <label className="labeldiv1">Wilis Argo</label>
-              <label className="labeldiv2">Ekonomi (Q)</label>
-              <label className="labeldiv3">05.00</label>
-              <label className="labeldiv4">Gambir</label>
-              <label className="labeldiv5">10.05</label>
-              <img
-                src={require("../img/Arrow5.png")}
-                alt="arrow"
-                className="panah"
-              ></img>
-              <label className="labeldiv6">Surabaya</label>
-              <label className="labelwaktu">5j 05m</label>
-              <label className="labelharga">100.000</label>
+            <div style={{ minHeight: "520px" }}>
+              <label className="labelinfo">Nama Kereta</label>
+              <label className="labelinfo2">Berangkat</label>
+              <label className="labelinfo3">Tiba</label>
+              <label className="labelinfo4">Durasi</label>
+              <label className="labelinfo5">Harga Per Orang</label>
+              {data != null
+                ? data.map((isi, index) => {
+                    return (
+                      <div className="coba">
+                        <label className="labeldiv1">{isi.nameTrain}</label>
+                        <label className="labeldiv2">
+                          {isi.typetrain.name}
+                        </label>
+                        <label className="labeldiv3">{isi.startTime}</label>
+                        <label className="labeldiv4">{isi.startStation}</label>
+                        <label className="labeldiv5">{isi.arrivalTime}</label>
+                        <img
+                          src={require("../img/Arrow5.png")}
+                          alt="arrow"
+                          className="panah"
+                        ></img>
+                        <label className="labeldiv6">
+                          {isi.destinationStation}
+                        </label>
+                        <label className="labelwaktu">
+                          {this.diff(isi.startTime, isi.arrivalTime)}
+                        </label>
+                        <label className="labelharga">{isi.price}</label>
+                      </div>
+                    );
+                  })
+                : null}
+              <p className="footer"></p>
             </div>
           </div>
         </div>
-        <p className="footer"></p>
       </>
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    findUser: state.findUser,
+    ticketUserR: state.ticketUserR
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    find: data => dispatch(find(data)),
+    ticketUserA: data => dispatch(ticketUserA(data))
+  };
+};
 
-export default Navbar;
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

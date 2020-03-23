@@ -10,6 +10,8 @@ import AdmAddTicket from "./components/admaddticket";
 import AdmDetailTicket from "./components/admdetailticket";
 import NavbarAdmin from "./components/navbar/admnav";
 import Navuser from "./components/navbar/nav";
+import MyticketApp from "./components/myticketapprove";
+import Preview from "./components/uploadpreview";
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -24,6 +26,8 @@ const AppRouter = () => (
       <Route path="/admdetailticket" exact component={AdmDetailTicket} />
       <Route path="/admnavbar" exact component={NavbarAdmin} />
       <Route path="/nav" exact component={Navuser} />
+      <Route path="/approve" exact component={MyticketApp} />
+      <Route path="/Prev" exact component={Preview} />
 
       {/* <Route path="/Login" component={Login} />
       <Route path="/Dashboard" component={Deck} />

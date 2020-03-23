@@ -1,55 +1,95 @@
 import React, { Component } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
-// import { Redirect } from "react-router-dom";
 import "../style/allcss.css";
-
-// import { LoginR } from "./_reducers/LoginR";
+import { connect } from "react-redux";
+// import { Redirect } from "react-router-dom";
+import { LoginA } from "../_actions/LoginA";
+// import { LoginR } from "../_reducers/LoginR";
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       show: false,
-      email: "",
-      password: ""
+      username: "",
+      password: "",
+      usernameErr: "",
+      passwordErr: ""
     };
   }
 
   handleModal = visible => {
     this.setState({ show: !visible });
   };
+
   handleLogin = e => {
     e.preventDefault();
-    const email = this.state.email;
-    const password = this.state.password;
-    const data = { email, password };
-    console.log("data login handle", data);
+    let dataLogin = {
+      username: this.state.username,
+      password: this.state.password
+    };
+    this.props.LoginA(dataLogin);
   };
 
-  handleEmail = e => {
-    e.preventDefault();
+  usernameOnChange = e => {
     this.setState({
-      email: e.target.value
+      username: e.target.value
     });
   };
 
-  handlePassword = e => {
-    e.preventDefault();
-    this.setState({
-      password: e.target.value
-    });
+  passwordOnChange = e => {
+    this.setState(
+      {
+        password: e.target.value
+      },
+      () => this.validatePassword(this.state.password)
+    );
   };
+
+  validatePassword = pass => {
+    if (pass.length >= 4) {
+      this.setState({
+        passwordErr: ""
+      });
+    } else if (pass.length === 0) {
+      this.setState({
+        passwordErr: "Harap masukan password anda"
+      });
+    } else {
+      this.setState({
+        passwordErr: "masukan dengan minimal 4 karakter"
+      });
+    }
+  };
+
+  validateUsername = user => {
+    if (user) {
+      this.setState({
+        usernameErr: ""
+      });
+    } else {
+      this.setState({
+        usernameErr: "mohon masuukan username anda"
+      });
+    }
+  };
+
   render() {
     // console.log(this.props);
     // return <Redirect to="/Dashboard" />;
 
     const { show } = this.state;
-    // const { data, isLoading, authenticated, error } = this.props.login;
+    const { data, isLogin, error, dataErr } = this.props.login;
+    if (isLogin === true && data.admin === false) {
+      window.localStorage.setItem("token", data.token);
+      window.location.href = "http://localhost:3000/afterlogin";
+    } else if (isLogin === true && data.admin === true) {
+      window.localStorage.setItem("token", data.token);
+      window.location.href = "http://localhost:3000/admindex";
+    }
+
     return (
       <>
-        {/* return <Redirect to="/Dashboard" />; */}
-        {/* {data.token != null ? <Redirect to="/Dashboard" /> : null} */}
-
         <Button
           className="loginbtn"
           size="lg"
@@ -66,40 +106,37 @@ class Login extends Component {
           <div id="coba1">
             <Modal.Title className="title-login"> Login</Modal.Title>
           </div>
-          <Form.Group>
-            <Form.Label></Form.Label>
-            <Form.Control
-              type="Email"
-              placeholder="Email"
-              className="emaillgn"
-              value={this.state.email}
-              onChange={this.handleEmail}
-            ></Form.Control>
-          </Form.Group>
-          <Form.Group>
-            <Form.Label></Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              className="passform"
-              value={this.state.password}
-              onChange={this.handlePassword}
-            ></Form.Control>
-          </Form.Group>
-          <Form.Group>
-            <Button
-              className="btnlogin"
-              variant="primary"
-              type="submit"
-              onClick={this.handleLogin}
-            >
-              Submit
-            </Button>
-            <Form.Group></Form.Group>
-            <Form.Label className="linktoreg">
-              Belum Punya Akun ? <strong> Klik disini </strong>
-            </Form.Label>
-          </Form.Group>
+          <Form onSubmit={this.handleLogin}>
+            <Form.Group>
+              <Form.Label></Form.Label>
+              <Form.Control
+                type="username"
+                placeholder="username"
+                className="emaillgn"
+                name="username"
+                onChange={this.usernameOnChange}
+              ></Form.Control>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label></Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                className="passform"
+                name="password"
+                onChange={this.passwordOnChange}
+              ></Form.Control>
+            </Form.Group>
+            <Form.Group>
+              <Button className="btnlogin" variant="primary" type="submit">
+                Submit
+              </Button>
+              <Form.Group></Form.Group>
+              <Form.Label className="linktoreg">
+                Belum Punya Akun ? <strong> Klik disini </strong>
+              </Form.Label>
+            </Form.Group>
+          </Form>
           <div></div>
         </Modal>
       </>
@@ -107,4 +144,16 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = state => {
+  return {
+    login: state.LoginR
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    LoginA: data => dispatch(LoginA(data))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
