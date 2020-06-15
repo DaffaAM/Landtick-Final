@@ -8,17 +8,20 @@ import Admnav from "../components/navbar/admnav";
 import { connect } from "react-redux";
 import { find } from "../_actions/getUserA";
 import { ticketUserA } from "../_actions/ticketUserA";
+import { getOrderAllA} from "../_actions/getOrderAllA";
 
 class AdmIndex extends Component {
   componentDidMount() {
     this.props.find();
     this.props.ticketUserA();
+    this.props.getOrderAllA();
   }
 
   render() {
     const { dataLu } = this.props.findUser;
     const { data } = this.props.ticketUserR;
-    console.log(data);
+    const { dataOrder} = this.props.getOrderAllR;
+    console.log("order",dataOrder);
     return (
       <>
         <div className="topnavbar">
@@ -33,21 +36,21 @@ class AdmIndex extends Component {
               <th style={{ paddingLeft: 20 }}>Status Payment</th>
               <th style={{ paddingLeft: 20 }}>Action</th>
             </tr>
-            {data !== null
-              ? data.map((isi, index) => {
+            {dataOrder !== null
+              ? dataOrder.map((isi, index) => {
                   return (
                     <tr>
                       <td style={{ paddingLeft: 20 }}>{index + 1}</td>
-                      <td style={{ paddingLeft: 20 }}>Daffa</td>
+                      <td style={{ paddingLeft: 20 }}>{isi.user.name}</td>
                       <td style={{ paddingLeft: 20 }}>
-                        {isi.startStation} -{isi.destinationStation}
+                        {isi.ticket.startStation} -{isi.ticket.destinationStation}
                       </td>
-                      <td style={{ paddingLeft: 20 }}>bni.jpg</td>
-                      <td style={{ paddingLeft: 20 }}>Pending</td>
+                  <td style={{ paddingLeft: 20 }}>{isi.attachment}</td>
+                      <td style={{ paddingLeft: 20 }}>{isi.status}</td>
                       <td style={{ paddingLeft: 20 }}>
                         <AdmDetailTicket />
                         <AdmEditTicket />
-                        <AdmDeleteTicket />
+                        <AdmDeleteTicket isi={isi} />
                       </td>
                     </tr>
                   );
@@ -64,13 +67,15 @@ class AdmIndex extends Component {
 const mapStateToProps = state => {
   return {
     findUser: state.findUser,
-    ticketUserR: state.ticketUserR
+    ticketUserR: state.ticketUserR,
+    getOrderAllR: state.getOrderAllR
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
     find: data => dispatch(find(data)),
-    ticketUserA: data => dispatch(ticketUserA(data))
+    ticketUserA: data => dispatch(ticketUserA(data)),
+    getOrderAllA: () => dispatch(getOrderAllA())
   };
 };
 

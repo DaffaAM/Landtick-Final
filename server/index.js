@@ -40,10 +40,14 @@ app.group("/api/v1", router => {
   router.get("/checkuser", authenticated, UserController.cekUser);
 
   router.post("/ticket", authenticated, TicketController.addticket);
-  router.get("/tickets", authenticated, TicketController.ticketAll);
-  router.get("/listdetail/:id", authenticated, OrderController.listOrderDetail);
+  router.get("/tickets", TicketController.ticketAll);
+  // router.get("/listorder/:id", authenticated, OrderController.listOrderDetail);
   router.get("/listorder", authenticated, OrderController.listOrder);
+  router.post("/orderticket",authenticated, OrderController.userOrder);
+  router.get("/listorderAll", authenticated, OrderController.listOrderAdm)
   // payment
+  router.delete("/deleteorder/:id", OrderController.deleteOrder)
+  router.get("/gettopay", authenticated, OrderController.payInvoice);
   router.get("/payment", authenticated, PaymentController.payment);
   router.get("/tfstatus", authenticated, PaymentController.transfer);
   router.patch("/payment/:id", authenticated, PaymentController.updatePayment);

@@ -57,7 +57,7 @@ class Usernav extends Component {
               alt="as"
             />
             <div className="childdrop">
-              <Link to="/approve">
+              <Link to="/myticket">
                 <div className="drop">
                   <p>Tiket Saya</p>
                 </div>

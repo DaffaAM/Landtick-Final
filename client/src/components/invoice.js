@@ -1,53 +1,54 @@
-import React, { useState } from "react";
+import React, { Component } from "react";
 import { Button } from "react-bootstrap";
 import "../style/allcss.css";
-import Alertbuy from "../components/alert/alertbuy";
+// import Alertbuy from "../components/alert/alertbuy";
 import { Redirect } from "react-router-dom";
 import Usernav from "../components/navbar/nav";
 
-function Invoice() {
-  const [show, setShow] = useState(false);
-  const [showAlCon, setShowAlCon] = useState(false);
-  const [pay, setPay] = useState(false);
+class Invoice extends Component {
+  // const [show, setShow] = useState(false);
+  // const [showAlCon, setShowAlCon] = useState(false);
+  // const [pay, setPay] = useState(false);
 
-  const handleClose = () => {
-    setShow(false);
-    setShowAlCon(true);
-    setTimeout(() => {
-      setPay(true);
-    }, 3000);
-  };
-  const handleShow = () => setShow(true);
+  // const handleClose = () => {
+  //   setShow(false);
+  //   setShowAlCon(true);
+  //   setTimeout(() => {
+  //     setPay(true);
+  //   }, 3000);
+  // };
+  // const handleShow = () => setShow(true);
 
-  const handleCloseAlCon = () => {
-    setShowAlCon(false);
-  };
+  // const handleCloseAlCon = () => {
+  //   setShowAlCon(false);
+  // };
 
-  // constructor(props){
-  //   super(props)
-  //   this.state = {
-  //     file: null
-  //   }
-  //   this.handleChange = this.handleChange.bind(this)
-  // }
-  // handleChange(event) {
-  //   this.setState({
-  //     file: URL.createObjectURL(event.target.files[0])
-  //   })
-  // }
+  constructor(props){
+    super(props)
+    this.state = {
+      file: null
+    }
+    this.handleChange = this.handleChange.bind(this)
+  }
+  handleChange(event) {
+    this.setState({
+      file: URL.createObjectURL(event.target.files[0])
+    })
+  }
 
-  const [state, setState] = useState({
-    file: null
-  });
-  const handleChange = e => {
-    setState({
-      ...state,
-      file: URL.createObjectURL(e.target.files[0])
-    });
-  };
+  // const [state, setState] = useState({
+  //   file: null
+  // });
+  // const handleChange = e => {
+  //   setState({
+  //     ...state,
+  //     file: URL.createObjectURL(e.target.files[0])
+  //   });
+  // };
+
+  render(){
   return (
     <>
-      {pay ? <Redirect to="/approve" /> : ""}
 
       <div className="topnavbar">
         <Usernav />
@@ -98,10 +99,10 @@ function Invoice() {
           </div>
         </div>
         <label for="uploadfile">
-          <img src={state.file} className="uploadphoto" />
+          <img src={this.state.file} className="uploadphoto" />
           <div className="uploadphoto">
             <input
-              onChange={handleChange}
+              onChange={(event) => this.handleChange(event)}
               type="file"
               style={{ display: "none" }}
               id="uploadfile"
@@ -149,14 +150,15 @@ function Invoice() {
           <p className="kotasmp1">Surabaya (SBY)</p>
           <p className="stssmp1">Stasiun Surabaya</p>
         </div>
-        <Button className="btninv" variant="primary" onClick={handleClose}>
+        <Button className="btninv" variant="primary" >
           Bayar
         </Button>
       </div>
-      <p className="footer"></p>
-      <Alertbuy action={handleCloseAlCon} show={showAlCon} />
+      <div>
+      <p className="footer2"></p>
+      </div>
     </>
   );
 }
-
+}
 export default Invoice;

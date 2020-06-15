@@ -7,7 +7,10 @@ module.exports = (sequelize, DataTypes) => {
       barcode: DataTypes.STRING,
       id_tiket: DataTypes.INTEGER,
       id_user: DataTypes.INTEGER,
-      id_payment: DataTypes.INTEGER
+      qty: DataTypes.INTEGER,
+      total_price: DataTypes.INTEGER,
+      status: DataTypes.STRING,
+      attachment: DataTypes.STRING
     },
     {}
   );
@@ -18,10 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     }),
       order.belongsTo(models.user, {
         foreignKey: "id_user"
-      }),
-      order.belongsTo(models.payment, {
-        foreignKey: "id_payment"
-      });
-  };
+      })
+  }
   return order;
 };

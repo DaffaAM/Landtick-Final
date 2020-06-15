@@ -6,6 +6,9 @@ import AddTicketR from "../_reducers/AddTicketR";
 import findUser from "../_reducers/getUserR";
 import ticketUserR from "../_reducers/ticketUserR";
 import PaymentR from "../_reducers/PaymentR";
+import getOrderR from "../_reducers/getOrderR";
+import getOrderAllR from "../_reducers/getOrderAllR"
+
 
 import { logger, promise } from "../config/middleware";
 // Global state
@@ -15,7 +18,9 @@ const rootReducers = combineReducers({
   AddTicketR,
   findUser,
   ticketUserR,
-  PaymentR
+  PaymentR,
+  getOrderR,
+  getOrderAllR
 });
 
 // Setup store for Redux

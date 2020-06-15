@@ -11,21 +11,21 @@ class AdmEditTicket extends Component {
     };
   }
 
-  handleModal = visible => {
-    this.setState({ show: !visible });
+  handleModal = () => {
+    this.setState({ show: !this.state.show });
   };
 
   render() {
-    const { show } = this.state;
+    // const { show } = this.state;
     return (
       <>
         <img
-          onClick={() => this.handleModal(show)}
+          onClick={() => this.handleModal()}
           src={require("../img/vectoredit.PNG")}
         ></img>
         <Modal
-          show={show}
-          onHide={() => this.handleModal(show)}
+          show={this.state.show}
+          onHide={() => this.handleModal()}
           dialogClassName="modal-90w"
           aria-labelledby="example-custom-modal-styling-title"
         >
@@ -43,10 +43,9 @@ class AdmEditTicket extends Component {
             <img
               src={require("../img/X.png")}
               alt="logo"
-              // show={show}
-              // onHide={() => this.handleModal(show)}
+              onClick={() => this.handleModal()}
               className="xbtnedit"
-            ></img>
+            />
             <p className="myticketkiriatas1">Land Tick</p>
 
             <input type="text" className="edittkt1" disabled value="1"></input>

@@ -4,16 +4,36 @@ import Usernav from "../components/navbar/nav";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { ticketUserA } from "../_actions/ticketUserA";
+import { getOrderA } from "../_actions/getOrderA";
 import { connect } from "react-redux";
 
 class MyTicket extends Component {
   componentDidMount() {
     this.props.ticketUserA();
+    this.props.getOrderA();
   }
 
+ takeDate = (fullDate) => {
+    const day = ["Senen", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu", "Minggu"]
+    const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
+    const date = new Date(fullDate)
+    let hari = date.getDay()
+    let tanggal = date.getDate()
+    let month = date.getMonth()
+    let year = date.getFullYear()
+
+    let tgl = day[hari] + ", " + tanggal + " " + months[month] + " " + year  
+
+    return tgl
+}
   render() {
     const { data } = this.props.ticketUserR;
-    console.log("yummy", data);
+    const { dataTiket } = this.props.getOrderR;
+
+
+
+
+    console.log("xxxx", dataTiket);
     return (
       <>
         <div className="topnavbar">
@@ -21,6 +41,9 @@ class MyTicket extends Component {
           <h3 className="turunmyticket">Tiket Saya</h3>
         </div>
 
+      {dataTiket != null ? 
+      dataTiket.map((isi, index) => {
+        return (
         <div className="myticket">
           <img
             src={require("../img/Vectorticket.png")}
@@ -35,10 +58,10 @@ class MyTicket extends Component {
           <p className="myticketkiriatas1">Land Tick</p>
           <p className="labelmyticket">Kereta Api</p>
           <p className="labelmyticket2">
-            <strong>Saturday</strong>, 21 February 2020
+            <strong>Saturday</strong>, {this.takeDate(isi.createdAt)}
           </p>
-          <p className="ket-tiket">Argo Wilis</p>
-          <p className="kelastiket">Eksekutif (H)</p>
+          <p className="ket-tiket">{isi.ticket.nameTrain}</p>
+        <p className="kelastiket">{isi.ticket.typetrain.name}</p>
           <img
             src={require("../img/asal.png")}
             alt="logo"
@@ -54,15 +77,15 @@ class MyTicket extends Component {
             alt="logo"
             className="buletbawah"
           ></img>
-          <p className="wktbrkt">05.00</p>
-          <p className="tglbrkt"> 21 February 2020</p>
-          <p className="wktsmp">10.05</p>
-          <p className="tglsmp">21 February 2020</p>
-          <p className="kotabrkt">Jakarta (GMR)</p>
-          <p className="stsbrkt">Stasiun Gambir</p>
-          <p className="kotasmp">Surabaya (SBY)</p>
-          <p className="stssmp">Stasiun Surabaya</p>
-          <p className="status">Pending</p>
+          <p className="wktbrkt">{isi.ticket.startTime}</p>
+          <p className="tglbrkt"> {this.takeDate(isi.createdAt)}</p>
+        <p className="wktsmp">{isi.ticket.arrivalTime}</p>
+          <p className="tglsmp">{this.takeDate(isi.createdAt)}</p>
+        <p className="kotabrkt">{isi.ticket.startStation}</p>
+        <p className="stsbrkt">{isi.ticket.startStation}</p>
+        <p className="kotasmp">{isi.ticket.destinationStation}</p>
+        <p className="stssmp">{isi.ticket.destinationStation}</p>
+          {isi.status === "pending" ? <p className="status">PENDING</p> : <p className="status1">APPROVE</p>}
           <div className="stronginline">
             <p className="order1">No. Tanda Pengenal</p>
             <p className="order2">Nama Pemesan</p>
@@ -71,13 +94,22 @@ class MyTicket extends Component {
           </div>
           <hr className="myticketrule"></hr>
           <p className="orderticket1">3174041806980008</p>
-          <p className="orderticket2">Daffa Abdhy Muzhaffar</p>
-          <p className="orderticket3">081210313944</p>
-          <p className="orderticket4">daffaa34@gmail.com</p>
+        <p className="orderticket2">{isi.user.username}</p>
+          <p className="orderticket3">{isi.user.email}</p>
+        <p className="orderticket4">{isi.user.phone}</p>
+          { isi.status == "pending" ?
           <Link to="/invoice">
             <Button className="btnbayar">Bayar Sekarang</Button>
-          </Link>
+          </Link> : <img
+          src={require("../img/qrmy.png")}
+          alt="asa"
+          className="qrmy123"
+        ></img>
+      }
         </div>
+          );
+        })
+      : null} 
       </>
     );
   }
@@ -85,13 +117,15 @@ class MyTicket extends Component {
 
 const mapStateToProps = state => {
   return {
-    ticketUserR: state.ticketUserR
+    ticketUserR: state.ticketUserR,
+    getOrderR: state.getOrderR
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    ticketUserA: data => dispatch(ticketUserA(data))
+    ticketUserA: data => dispatch(ticketUserA(data)),
+    getOrderA: () => dispatch(getOrderA())
   };
 };
 

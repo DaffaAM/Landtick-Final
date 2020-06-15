@@ -20,11 +20,12 @@
 }
 
 .myticket {
-  position: absolute;
+  position: relative;
   width: 1035px;
   height: 344px;
   left: 232px;
   top: 210px;
+  margin-top: 40px;
 
   border: 1px solid #b7b7b7;
   box-sizing: border-box;
@@ -137,9 +138,9 @@ h1.sayhey {
 
 .labelmyticket2 {
   position: absolute;
-  width: 250px;
+  width: 300px;
   height: 25px;
-  left: 810px;
+  left: 770px;
   top: 60px;
 
   font-family: "Roboto";
@@ -324,7 +325,7 @@ h1.sayhey {
 
 .tglsmp {
   position: absolute;
-  width: 150px;
+  width: 170px;
   height: 24px;
   left: 285px;
   top: 165px;
@@ -339,7 +340,7 @@ h1.sayhey {
 
 .tglbrkt {
   position: absolute;
-  width: 150px;
+  width: 170px;
   height: 24px;
   left: 285px;
   top: 75px;
@@ -387,7 +388,7 @@ h1.sayhey {
 
 .status1 {
   position: absolute;
-  width: 69px;
+  width: 72px;
   height: 24px;
   left: 70px;
   top: 150px;
@@ -455,7 +456,7 @@ h1.sayhey {
 
 .labeldiv3 {
   margin-top: -40px;
-  margin-left: 310px;
+  margin-left: 290px;
   display: block;
 
   font-family: Avenir;
@@ -469,7 +470,7 @@ h1.sayhey {
 
 .labeldiv4 {
   margin-top: -15px;
-  margin-left: 310px;
+  margin-left: 290px;
 
   font-family: Avenir;
   font-style: normal;
@@ -485,7 +486,7 @@ h1.sayhey {
 
 .labeldiv5 {
   margin-top: -45px;
-  margin-left: 480px;
+  margin-left: 500px;
 
   font-family: Avenir;
   font-style: normal;
@@ -499,7 +500,7 @@ h1.sayhey {
 
 .labeldiv6 {
   margin-top: -40px;
-  margin-left: 475px;
+  margin-left: 500px;
 
   font-family: Avenir;
   font-style: normal;
@@ -515,8 +516,8 @@ h1.sayhey {
   position: absolute;
   width: 58px;
   height: 25px;
-  left: 655px;
-  top: 25px;
+  left: 705px;
+  top: 30px;
 
   font-family: Avenir;
   font-style: normal;
@@ -541,6 +542,21 @@ h1.sayhey {
 
   background: linear-gradient(90deg, #ec7ab7 0%, #ec7a7a 100%);
 }
+
+.footer2 {
+  
+
+  /* position: absolute; */
+  width: 1519px;
+  height: 80px;
+  left: 0px;
+  margin-top: 950px;
+  /* top: 1180px; */
+
+  background: linear-gradient(90deg, #ec7ab7 0%, #ec7a7a 100%);
+}
+
+
 .tulisbtn {
   position: relative;
   bottom: 6px;
@@ -557,6 +573,14 @@ h1.sayhey {
   text-align: center;
 }
 
+.btnbeli{
+  position: relative;
+  left: 1100px;
+  top: -40px;
+  background: linear-gradient(90deg, #ec7ab7 -0.6%, #ec7a7a 100%);
+
+}
+
 .panahbolak {
   position: relative;
   top: -40px;
@@ -568,7 +592,7 @@ h1.sayhey {
   width: 103px;
   height: 25px;
   left: 958px;
-  top: 20px;
+  top: 30px;
 
   font-family: Avenir;
   font-style: normal;
@@ -585,8 +609,8 @@ h1.sayhey {
 
 .panah {
   position: relative;
-  left: 400px;
-  top: -40px;
+  left: 415px;
+  top: -30px;
 }
 
 .ingin {
@@ -694,7 +718,7 @@ h1.sayhey {
 
 .title {
   font-family: "Oswald";
-  myticketcolor: white;
+  color: white;
   position: absolute;
   width: 124px;
   height: 32px;
@@ -779,7 +803,7 @@ h1.sayhey {
 .labelinfo2 {
   position: relative;
   top: 220px;
-  margin-left: 50px;
+  margin-left: 40px;
   left: 280px;
   font-weight: bolder;
 }
@@ -787,7 +811,7 @@ h1.sayhey {
 .labelinfo3 {
   position: relative;
   top: 223px;
-  margin-left: 50px;
+  margin-left: 80px;
   left: 340px;
   font-weight: bolder;
 }
@@ -796,7 +820,7 @@ h1.sayhey {
   position: relative;
   top: 190px;
   margin-left: 50px;
-  left: 770px;
+  left: 810px;
   font-weight: bolder;
 }
 
@@ -1089,9 +1113,9 @@ h1.sayhey {
 }
 
 .qrstatus {
-  position: relative;
+  position: absolute;
   left: 370px;
-  top: -60px;
+  top: 80px;
   font-family: "Roboto";
 }
 
@@ -1939,7 +1963,7 @@ td {
 .order34 {
   position: relative;
   top: -120px;
-  left: 650px;
+  left: 600px;
   font-family: "Spartan", sans-serif;
 }
 

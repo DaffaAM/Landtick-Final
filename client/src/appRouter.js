@@ -12,6 +12,7 @@ import NavbarAdmin from "./components/navbar/admnav";
 import Navuser from "./components/navbar/nav";
 import MyticketApp from "./components/myticketapprove";
 import Preview from "./components/uploadpreview";
+import tesAlert from './components/alert/alertbuy';
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -28,6 +29,7 @@ const AppRouter = () => (
       <Route path="/nav" exact component={Navuser} />
       <Route path="/approve" exact component={MyticketApp} />
       <Route path="/Prev" exact component={Preview} />
+      <Route path="/tesAlert" exact component={tesAlert} />
 
       {/* <Route path="/Login" component={Login} />
       <Route path="/Dashboard" component={Deck} />

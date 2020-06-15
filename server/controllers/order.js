@@ -2,7 +2,6 @@ const models = require("../models");
 const User = models.user;
 const TypeTrain = models.typetrain;
 const Ticket = models.tickets;
-const Payment = models.payment;
 const Order = models.order;
 
 exports.add = (req, res) => {
@@ -29,84 +28,100 @@ exports.add = (req, res) => {
     price,
     qty
   };
+}
 
-  exports.order = async (req, res) => {
-    try {
-      const { no_invoice, id_tiket, qty, totalPrice } = req.body;
+//   exports.listOrder = async (req, res) => {
+//     try {
+//       const data = await Order.findAll({
+//         include: [
+//           {
+//             model: User
+//           },
+//           {
+//             model: Ticket
+//           },
+//       ]
+//     });
+//     res.send({
+//       data
+//     });
+//     console.log(data)
+//   } catch (error) {
+//     res.send(error);
+//   }
+// };
 
-      const payment = {
-        qty,
-        totalPrice,
-        status: "Pending",
-        attachment: "bca.jpg"
-      };
-      const data = await Payment.create(payment);
+// exports.listOrderDetail = async (req, res) => {
+//   try {
+//     const data = await Order.findOne({
+//       where: { id: req.params.id },
+//       include: [
+//         {
+//           model: User
+//         },
+//         {
+//           model: Ticket,
+//           include: [
+//             {
+//               model: TypeTrain
+//             }
+//           ]
+//         }
+//       ]
+//     });
+//     res.send({
+//       data
+//     });
+//   } catch (error) {
+//     res.send(error);
+//   }
+// };
+    
+exports.userOrder = (req, res) => {
+  
+  const {
+    no_invoice,
+    id_tiket,
+    qty,
+    total_price
+  } = req.body
+  
+  const order = {
+    no_invoice,
+    barcode : "null",
+    id_tiket,
+    id_user : req.user.userId,
+    qty,
+    total_price,
+    status: "pending",
+    attachment: ''
+  }
 
-      const order = {
-        no_invoice,
-        id_tiket,
-        id_user: req.user.userId,
-        id_payment: data.id
-      };
-      const data2 = await Order.create(order);
+  
+  console.log(order)
+  Order.create(order).then(user => {
+    if(user) {
       res.send({
-        msg: "Success"
-      });
-    } catch (error) {
-      res.status(401).send({
-        msg: "Error"
-      });
+        user
+      })
     }
-  };
-
-  Ticket.create(addTiket)
-    .then(tiket => {
-      if (tiket) {
-        res.send({
-          message: "success add ticket"
-        });
-      }
-    })
-    .catch(err => {
-      return res.send({
-        message: err.message
+  }).catch(err => {
+      return res.status(400).send({
+          message: err.message
       });
-    });
-};
+  });
+
+}
+
 
 exports.listOrder = async (req, res) => {
   try {
     const data = await Order.findAll({
-      include: [
-        {
-          model: User
-        },
-        {
-          model: Payment
-        },
-        {
-          model: Ticket
-        }
-      ]
-    });
-    res.send({
-      data
-    });
-  } catch (error) {
-    res.send(error);
-  }
-};
+      where: { id_user: req.user.userId },
 
-exports.listOrderDetail = async (req, res) => {
-  try {
-    const data = await Order.findOne({
-      where: { id: req.params.id },
       include: [
         {
           model: User
-        },
-        {
-          model: Payment
         },
         {
           model: Ticket,
@@ -118,10 +133,88 @@ exports.listOrderDetail = async (req, res) => {
         }
       ]
     });
+
     res.send({
       data
     });
   } catch (error) {
-    res.send(error);
+    res.status(401).send({
+      message: error.message
+    });
   }
 };
+
+
+exports.listOrderAdm = async (req, res) => {
+  try {
+    const data = await Order.findAll({
+
+      include: [
+        {
+          model: User
+        },
+        {
+          model: Ticket,
+          include: [
+            {
+              model: TypeTrain
+            }
+          ]
+        }
+      ]
+    });
+
+    res.send({
+      data
+    });
+  } catch (error) {
+    res.status(401).send({
+      message: error.message
+    });
+  }
+};
+
+
+exports.payInvoice = async (req, res) => {
+  Order.findAll({
+    where: {
+      id_user: req.user.userId, status: "pending"
+    },
+    //include attributes 
+    attributes:["id","no_invoice","barcode","qty","total_price","status", "attachment"],
+    include:[{
+      model:User,
+      attributes: ["id", "name", "username", "email", "password", "gender", "phone", "address"]
+    },
+    {
+      model:Ticket,
+      attributes:["id", "nameTrain", "dateStart", "startStation", "startTime", "destinationStation", "arrivalTime", "price", "qty"],
+      include: [{
+        model: TypeTrain,
+        attributes: ["id", "name"]
+    }]  
+    },
+   
+  ],
+    
+  }).then(data =>{
+    res.send(data)
+  })
+}
+
+
+
+exports.deleteOrder = async (req, res) => {
+try {
+   Order.destroy({
+    where:{
+      id: req.params.id
+    }
+  });
+res.send({
+  msg: "Order ini telah dihapus"
+})
+} catch (error) {
+  res.send(error)
+}
+}

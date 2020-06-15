@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { Modal } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
+import Axios from 'axios'
+
 
 class AdmDeleteTicket extends Component {
   constructor(props) {
@@ -15,8 +17,25 @@ class AdmDeleteTicket extends Component {
     this.setState({ show: !visible });
   };
 
+  delete = async () => {
+    const token = window.localStorage.getItem('token')
+    try {
+      await Axios({
+        method: "DELETE",
+        url: `http://127.0.0.1:3900/api/v1/deleteorder/${this.props.isi.id}`,
+        headers: {Authorization: `Bearer ${token}`}
+      });
+      window.location.href = "http://localhost:3000/admindex";
+    } catch (error) {
+      console.log(error.messages);
+      
+    }
+  };
   render() {
     const { show } = this.state;
+
+    console.log(this.props.isi);
+    
     return (
       <>
         <img
@@ -31,19 +50,15 @@ class AdmDeleteTicket extends Component {
         >
           <Modal.Header closeButton>
             <Modal.Title id="example-custom-modal-styling-title">
-              Custom Modal Styling
+              Info
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <p>
-              Ipsum molestiae natus adipisci modi eligendi? Debitis amet quae
-              unde commodi aspernatur enim, consectetur. Cumque deleniti
-              temporibus ipsam atque a dolores quisquam quisquam adipisci
-              possimus laboriosam. Quibusdam facilis doloribus debitis! Sit
-              quasi quod accusamus eos quod. Ab quos consequuntur eaque quo rem!
-              Mollitia reiciendis porro quo magni incidunt dolore amet atque
-              facilis ipsum deleniti rem!
-            </p>
+          Are you Sure to Delete this Transaction? {this.props.isi.id}
+          </p>
+            <Button variant="danger" style={{width:70}} onClick={this.delete}>Yes</Button>
+            <Button style={{marginLeft:20,width:70}}>No</Button>
           </Modal.Body>
         </Modal>
       </>
